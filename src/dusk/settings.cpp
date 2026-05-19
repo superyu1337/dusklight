@@ -124,6 +124,8 @@ UserSettings g_userSettings = {
         .freeMagicArmor {"game.freeMagicArmor", false},
         .invincibleEnemies {"game.invincibleEnemies", false},
         .transformWithoutShadowCrystal {"game.transformWithoutShadowCrystal", false},
+        .infiniteEpona {"game.infiniteEpona", false},
+        .modelOverride {"game.modelOverride", 0},
 
         // Technical
         .restoreWiiGlitches {"game.restoreWiiGlitches", false},
@@ -302,6 +304,8 @@ void registerSettings() {
     Register(g_userSettings.game.enableLED[2]);
     Register(g_userSettings.game.enableLED[3]);
     Register(g_userSettings.game.swapDirectSelect);
+    Register(g_userSettings.game.infiniteEpona);
+    Register(g_userSettings.game.modelOverride);
 
     Register(g_userSettings.backend.isoPath);
     Register(g_userSettings.backend.isoVerification);

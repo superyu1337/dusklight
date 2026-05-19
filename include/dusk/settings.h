@@ -231,6 +231,8 @@ struct UserSettings {
         ConfigVar<bool> freeMagicArmor;
         ConfigVar<bool> invincibleEnemies;
         ConfigVar<bool> transformWithoutShadowCrystal;
+        ConfigVar<bool> infiniteEpona;
+        ConfigVar<int> modelOverride;
 
         // Technical
         ConfigVar<bool> restoreWiiGlitches;
