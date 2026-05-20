@@ -125,6 +125,7 @@ UserSettings g_userSettings = {
         .invincibleEnemies {"game.invincibleEnemies", false},
         .transformWithoutShadowCrystal {"game.transformWithoutShadowCrystal", false},
         .infiniteEpona {"game.infiniteEpona", false},
+        .unbreakableWoodShield = {"game.unbreakableWoodShield", false},
         .modelOverride {"game.modelOverride", 0},
 
         // Technical
@@ -305,6 +306,7 @@ void registerSettings() {
     Register(g_userSettings.game.enableLED[3]);
     Register(g_userSettings.game.swapDirectSelect);
     Register(g_userSettings.game.infiniteEpona);
+    Register(g_userSettings.game.unbreakableWoodShield);
     Register(g_userSettings.game.modelOverride);
 
     Register(g_userSettings.backend.isoPath);

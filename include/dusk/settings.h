@@ -232,6 +232,7 @@ struct UserSettings {
         ConfigVar<bool> invincibleEnemies;
         ConfigVar<bool> transformWithoutShadowCrystal;
         ConfigVar<bool> infiniteEpona;
+        ConfigVar<bool> unbreakableWoodShield;
         ConfigVar<int> modelOverride;
 
         // Technical
