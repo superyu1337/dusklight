@@ -4576,6 +4576,9 @@ public:
         void (*preInit)(daAlink_c* context);       // Optional callback for specialized logic
         void (*postInit)(daAlink_c* context);       // Optional callback for specialized logic
     };
+    request_of_phase_process_class mPhaseReqSumo;
+    const char* mArcNameSumo;
+    JKRExpHeap* mpArcHeapSumo;
     void loadModel(const LinkModelConfig& modelConfig, JKRHeap* heap);
 
     static const int IRON_BALL_CHAIN_COUNT = 102;

@@ -448,11 +448,10 @@ void daAlink_c::loadModel(const LinkModelConfig& modelConfig, JKRHeap* heap) {
     }
 
     J3DModelData* faceData = nullptr;
-    const u8 modelOverride = dusk::getSettings().game.modelOverride.getValue();
-
-    const bool useNormalFace = (modelOverride == 0)
+    const dusk::ModelOverride modelOverride = dusk::getSettings().game.modelOverride.getValue();
+    const bool useNormalFace = (modelOverride == dusk::ModelOverride::Off)
        ? (checkNoResetFlg2(FLG2_UNK_200000) || !checkZoraWearFlg())
-       : (modelOverride != 2);
+       : (modelOverride == dusk::ModelOverride::Sumo || modelOverride != dusk::ModelOverride::Zora);
 
     faceData = static_cast<J3DModelData*>(
         dComIfG_getObjectRes(mArcName, useNormalFace ? "al_face.bmd" : "zl_face.bmd")
@@ -474,7 +473,7 @@ void daAlink_c::changeLink(int param_0) {
 #if TARGET_PC
     u8 activeModelId = 4;
 
-    if (dusk::getSettings().game.modelOverride.getValue() == 0) {
+    if (dusk::getSettings().game.modelOverride.getValue() == dusk::ModelOverride::Off) {
         if (checkNoResetFlg2(FLG2_UNK_200000)) {
             activeModelId = 0;
         } else if (checkCasualWearFlg()) {
@@ -485,7 +484,7 @@ void daAlink_c::changeLink(int param_0) {
             activeModelId = 3;
         }
     } else {
-        activeModelId = dusk::getSettings().game.modelOverride.getValue();
+        activeModelId = static_cast<u8>(dusk::getSettings().game.modelOverride.getValue()) - 1;
     }
 
     loadModel(sLinkModelLUT[activeModelId], current_heap);

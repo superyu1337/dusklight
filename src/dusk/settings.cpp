@@ -127,7 +127,7 @@ UserSettings g_userSettings = {
         .infiniteEpona {"game.infiniteEpona", false},
         .unbreakableWoodShield = {"game.unbreakableWoodShield", false},
         .stopDaylightCycle = {"game.stopDaylightCycle", false},
-        .modelOverride {"game.modelOverride", 0},
+        .modelOverride {"game.modelOverride", ModelOverride::Off},
 
         // Technical
         .restoreWiiGlitches {"game.restoreWiiGlitches", false},

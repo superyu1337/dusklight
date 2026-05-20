@@ -6,7 +6,6 @@
 #include "dusk/config_var.hpp"
 
 namespace dusk {
-
 using namespace config;
 
 enum class BloomMode : int {
@@ -57,6 +56,15 @@ enum class MenuScaling : u8 {
     Dusklight = 2,
 };
 
+enum class ModelOverride : u8 {
+    Off = 0,
+    Sumo = 1,
+    Casual = 2,
+    Zora = 3,
+    Magic = 4,
+    Kokiri = 5
+};
+
 namespace config {
 template <>
 struct ConfigEnumRange<BloomMode> {
@@ -104,6 +112,12 @@ template <>
 struct ConfigEnumRange<MenuScaling> {
     static constexpr auto min = MenuScaling::GameCube;
     static constexpr auto max = MenuScaling::Dusklight;
+};
+
+template <>
+struct ConfigEnumRange<ModelOverride> {
+    static constexpr auto min = ModelOverride::Off;
+    static constexpr auto max = ModelOverride::Kokiri;
 };
 }  // namespace config
 
@@ -234,7 +248,7 @@ struct UserSettings {
         ConfigVar<bool> infiniteEpona;
         ConfigVar<bool> unbreakableWoodShield;
         ConfigVar<bool> stopDaylightCycle;
-        ConfigVar<int> modelOverride;
+        ConfigVar<ModelOverride> modelOverride;
 
         // Technical
         ConfigVar<bool> restoreWiiGlitches;

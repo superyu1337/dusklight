@@ -4980,6 +4980,15 @@ int daAlink_c::create() {
             return cPhs_INIT_e;
         }
 
+#if TARGET_PC
+        setOriginalHeap(&mpArcHeapSumo, 0xA2800);
+        JKRHEAP_NAME(mpArcHeapSumo, "Alink ArcHeapSumo");
+        if (dComIfG_resLoad(&mPhaseReqSumo, "alSumou", mpArcHeapSumo) != cPhs_COMPLEATE_e)
+        {
+            return cPhs_INIT_e;
+        }
+#endif
+
         u32 heapSize = 0x3E930;
         heapSize |= 0x80000000;
         heapSize |= 0x40000000;
@@ -18535,12 +18544,7 @@ int daAlink_c::execute() {
 
                 if (field_0x2fcb != 0) {
                     if (checkWoodShieldEquip() && mWaterY < mShieldModel->getBaseTRMtx()[1][3]) {
-#if TARGET_PC
-                        if (!dusk::getSettings().game.unbreakableWoodShield)
-                            field_0x2fcb--;
-#else
                         field_0x2fcb--;
-#endif
 
                         if (field_0x2fcb == 0) {
                             dMeter2Info_setShield(dItemNo_NONE_e, true);
@@ -19873,6 +19877,13 @@ daAlink_c::~daAlink_c() {
     if (mpShieldArcHeap != NULL) {
         mDoExt_destroyExpHeap(mpShieldArcHeap);
     }
+
+#if TARGET_PC
+    dComIfG_resDelete(&mPhaseReqSumo, "alSumou");
+    if (mpArcHeapSumo != NULL) {
+        mDoExt_destroyExpHeap(mpArcHeapSumo);
+    }
+#endif
 
     dKy_plight_cut(&mMagneBootsPlight);
 

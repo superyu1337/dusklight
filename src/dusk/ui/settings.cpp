@@ -68,6 +68,7 @@ constexpr std::array kInterpolationModes = {
 
 constexpr std::array kModelOverrides = {
     "Off",
+    "Sumo",
     "Casual",
     "Zora",
     "Magic Armor",
@@ -1286,10 +1287,6 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
             "Infinite Rupees", getSettings().game.infiniteRupees, "Keeps your rupee count full.");
         addCheat("No Item Timer", getSettings().game.enableIndefiniteItemDrops,
             "Item drops such as rupees and hearts will never disappear after they drop.");
-        addCheat("Infinite Epona Dashes", getSettings().game.infiniteEpona, "Keeps Epona's dash meter full.");
-        addCheat("Unbreakable Wooden Shield", getSettings().game.unbreakableWoodShield,
-            "Prevents the wooden shield from breaking.");
-
 
         leftPane.add_section("Abilities");
         addCheat(
@@ -1314,8 +1311,6 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
             "Allows Link to transform without the Shadow Crystal (Only using Quick Transform.)");
 
         leftPane.add_section("Visual");
-        addCheat("Stop Daylight Cycle", getSettings().game.stopDaylightCycle,
-        "Freezes the daylight cycle in place.");
         leftPane.register_control(
             leftPane.add_select_button({
                 .key = "Model Override",
@@ -1335,7 +1330,7 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
                             .text = kModelOverrides[i],
                             .isSelected =
                                 [i] {
-                                    return getSettings().game.modelOverride.getValue() == i;
+                                    return getSettings().game.modelOverride.getValue() == static_cast<ModelOverride>(i);
                                 },
                         })
                         .on_pressed([i] {
@@ -1347,11 +1342,15 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
                                 // Don't accept user change when in Sumo mode.
                                 // Otherwise, we crash.
                                 if (!player->checkNoResetFlg2(daPy_py_c::FLG2_UNK_200000)) {
-                                    getSettings().game.modelOverride.setValue(i);
-                                    player->setClothesChange(0);
+                                    getSettings().game.modelOverride.setValue(static_cast<ModelOverride>(i));
+
+                                    // Don't trigger immediate change when we are a wolf.
+                                    if (!player->checkWolf()) {
+                                        player->setClothesChange(0);
+                                    }
                                 }
                             } else {
-                                getSettings().game.modelOverride.setValue(i);
+                                getSettings().game.modelOverride.setValue(static_cast<ModelOverride>(i));
                             }
                             config::Save();
                         });

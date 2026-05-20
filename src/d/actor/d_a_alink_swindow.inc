@@ -16,7 +16,7 @@ void daAlink_c::setArcName(BOOL i_isWolf) {
     if (i_isWolf) {
         mArcName = l_wArcName;
     } else {
-        if (dusk::getSettings().game.modelOverride.getValue() == 0) {
+        if (dusk::getSettings().game.modelOverride.getValue() == dusk::ModelOverride::Off) {
             if (checkCasualWearFlg()) {
                 mArcName = l_bArcName;
             } else if (checkZoraWearFlg()) {
@@ -27,8 +27,15 @@ void daAlink_c::setArcName(BOOL i_isWolf) {
                 mArcName = l_kArcName;
             }
         } else {
-            int modelOverride = dusk::getSettings().game.modelOverride.getValue();
-            auto modelConfig = sLinkModelLUT[modelOverride];
+            const dusk::ModelOverride modelOverride = dusk::getSettings().game.modelOverride.getValue();
+            int id = 0;
+            if (modelOverride == dusk::ModelOverride::Sumo) {
+                id = static_cast<u8>(dusk::ModelOverride::Kokiri);
+            } else {
+                id = static_cast<u8>(dusk::getSettings().game.modelOverride.getValue());
+            }
+
+            const LinkModelConfig modelConfig = sLinkModelLUT[id-1];
             mArcName = modelConfig.arcName;
         }
     }
@@ -101,7 +108,15 @@ int daAlink_c::loadModelDVD() {
             mpWlMidnaHandModel = NULL;
             mpWlMidnaHairModel = NULL;
 
+#if TARGET_PC
+            // We force to unload the model when overriding is active.
+            // TODO: Figure out what this flag does, and use the systems in place by the game
+            // instead of this hacky shit
+            if (!checkNoResetFlg2(FLG2_UNK_280000)
+                || dusk::getSettings().game.modelOverride != dusk::ModelOverride::Off) {
+#else
             if (!checkNoResetFlg2(FLG2_UNK_280000)) {
+#endif
                 if (!dComIfG_resDelete(&mPhaseReq, mArcName)) {
 #if TARGET_PC
                     // resDelete no-ops if load was in-progress; force-unregister before freeAll
@@ -118,7 +133,13 @@ int daAlink_c::loadModelDVD() {
                 }
             }
         } else if (mClothesChangeWaitTimer == 1) {
-            if (checkNoResetFlg2(FLG2_UNK_280000)) {
+#if TARGET_PC
+            // Don't load Model early when overriding. We need to load the model first.
+            if (checkNoResetFlg2(FLG2_UNK_280000)
+                && dusk::getSettings().game.modelOverride == dusk::ModelOverride::Off) {
+#else
+            if (checkNoResetFlg2(FLG2_UNK_280000) {
+#endif
                 mClothesChangeWaitTimer = 0;
                 changeLink(1);
             } else {
