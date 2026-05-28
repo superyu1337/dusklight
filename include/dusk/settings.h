@@ -6,6 +6,7 @@
 #include "dusk/config_var.hpp"
 
 namespace dusk {
+
 using namespace config;
 
 enum class BloomMode : int {

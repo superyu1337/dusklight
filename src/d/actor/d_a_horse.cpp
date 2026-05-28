@@ -3383,7 +3383,6 @@ void daHorse_c::setLashCnt() {
 
             if (!checkStateFlg0(FLG0_PLAYER_BACK_RIDE_LASH)) {
                 m_lashCnt--;
-                
                 if (m_lashCnt == 0) {
                     m_lashRecoverTime = m_hio->m.full_spur_recovery_time;
                 } else {
