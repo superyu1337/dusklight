@@ -245,9 +245,6 @@ struct UserSettings {
         ConfigVar<bool> freeMagicArmor;
         ConfigVar<bool> invincibleEnemies;
         ConfigVar<bool> transformWithoutShadowCrystal;
-        ConfigVar<bool> infiniteEpona;
-        ConfigVar<bool> unbreakableWoodShield;
-        ConfigVar<bool> stopDaylightCycle;
         ConfigVar<ModelOverride> modelOverride;
 
         // Technical
